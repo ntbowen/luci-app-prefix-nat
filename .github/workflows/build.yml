@@ -66,11 +66,11 @@ jobs:
           mkdir -p build/data/www
           cp -r htdocs/* build/data/www/ 2>/dev/null || true
 
-          # Build ipk (tar of tar.gz files)
+          # Build ipk (gzipped tar of tar.gz members, matching OpenWRT SDK format)
           cd build/control && tar czf ../control.tar.gz . && cd ../..
           cd build/data && tar czf ../data.tar.gz . && cd ../..
           echo "2.0" > build/debian-binary
-          cd build && tar cf "../${PKG_FULL}.ipk" ./debian-binary ./control.tar.gz ./data.tar.gz && cd ..
+          cd build && tar czf "../${PKG_FULL}.ipk" ./debian-binary ./control.tar.gz ./data.tar.gz && cd ..
 
           echo "PKG_FULL=${PKG_FULL}" >> "$GITHUB_ENV"
           echo "Built: ${PKG_FULL}.ipk ($(stat -c %s "${PKG_FULL}.ipk") bytes)"
